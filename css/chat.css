@@ -18,6 +18,9 @@ html, body {
   clear: both;
   content: ''; }
 
+.hidden {
+  display: none; }
+
 .chat {
   display: -webkit-box;
   display: -webkit-flex;
@@ -118,6 +121,8 @@ html, body {
       height: 30px;
       background: #fff;
       border-radius: 0 0 50% 50%; }
+  .chat__typing {
+    opacity: .6; }
   .chat__footer {
     display: -webkit-box;
     display: -webkit-flex;

@@ -54,7 +54,9 @@
 							<img class="img img--responsive img--circle" src="img/avatar.jpg" alt="Avatar">
 						</div>
 						<div class="chat__bubble">
-							<i class="zmdi zmdi-more"></i>
+							<div class="chat__typing">
+								<i class="zmdi zmdi-more"></i>
+							</div>
 						</div>
 					</div>
 					<div class="chat__message chat__message--right chat__message--typing">
@@ -62,7 +64,9 @@
 							<img class="img img--responsive img--circle" src="img/avatar2.jpg" alt="Avatar">
 						</div>
 						<div class="chat__bubble">
-							<i class="zmdi zmdi-more"></i>
+							<div class="chat__typing">
+								<i class="zmdi zmdi-more"></i>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -73,6 +77,21 @@
 					Send
 				</button>
 			</footer>
+		</div>
+		<div class="templates hidden">
+			<div class="templates__template" id="chat__message">
+				<div class="chat__message">
+					<div class="chat__avatar">
+						<img class="img img--responsive img--circle" src="#" alt="">
+					</div>
+					<div class="chat__bubble"></div>
+				</div>
+			</div>
+			<div class="templates__template" id="chat__typing">
+				<div class="chat__typing">
+					<i class="zmdi zmdi-more"></i>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>
