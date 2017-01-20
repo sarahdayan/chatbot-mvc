@@ -30,6 +30,7 @@ ChatView.prototype = {
 
 	setupHandlers: function () {
 		this.addMessageButtonHandler = this.addMessageButton.bind(this);
+		this.addMessageInputHandler = this.handleKeyups.bind(this);
 		this.clearMessageInputHandler = this.clearMessageInput.bind(this);
 		this.addMessageHandler = this.addMessage.bind(this);
 
@@ -38,6 +39,7 @@ ChatView.prototype = {
 
 	enable: function () {
 		this.$addMessageButton.click(this.addMessageButtonHandler);
+		this.$messageInput.keyup(this.addMessageInputHandler);
 		this.model.addMessageEvent.attach(this.addMessageHandler);
 		this.model.addMessageEvent.attach(this.clearMessageInputHandler);
 
@@ -83,6 +85,12 @@ ChatView.prototype = {
 
 	addMessage: function () {
 		this.show();
+	},
+
+	handleKeyups: function (event) {
+		if (event.keyCode === 13) {
+			this.addMessageButton();
+		}
 	}
 
 };
