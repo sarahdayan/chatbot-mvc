@@ -9,14 +9,14 @@
 		<link rel="stylesheet" href="css/chat.css">
 	</head>
 	<body>
-		<div class="chat">
+		<div class="chat js-chat">
 			<header class="chat__header">
 				<h1 class="chat__title">
 					Chat
 				</h1>
 			</header>
 			<div class="chat__body">
-				<div class="chat__inner">
+				<div class="chat__inner js-chat__inner">
 					<div class="chat__message">
 						<div class="chat__avatar">
 							<img class="img img--responsive img--circle" src="img/avatar.jpg" alt="Avatar">
@@ -72,19 +72,19 @@
 				</div>
 			</div>
 			<footer class="chat__footer">
-				<input type="text" name="chat__input" class="chat__input">
-				<button type="submit" name="chat__submit" class="chat__submit">
+				<input type="text" name="chat__input" class="chat__input js-chat__input">
+				<button type="submit" name="chat__submit" class="chat__submit js-chat__submit">
 					Send
 				</button>
 			</footer>
 		</div>
 		<div class="templates hidden">
 			<div class="templates__template" id="chat__message">
-				<div class="chat__message">
-					<div class="chat__avatar">
+				<div class="chat__message js-chat__message">
+					<div class="chat__avatar js-chat__avatar">
 						<img class="img img--responsive img--circle" src="#" alt="">
 					</div>
-					<div class="chat__bubble"></div>
+					<div class="chat__bubble js-chat__bubble"></div>
 				</div>
 			</div>
 			<div class="templates__template" id="chat__typing">
