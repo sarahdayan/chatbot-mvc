@@ -22,7 +22,7 @@ ChatView.prototype = {
 		this.$messagesContainer = this.$container.find('.js-chat__messenger');
 		this.$typerContainer = this.$container.find('.js-chat__typer');
 
-		this.$message = this.$container.find('.js-chat__message');
+		this.$message = $('.js-chat__message');
 
 		this.$messageTemplate = $('#chat__message').clone();
 		this.$messageTemplateMessage = this.$messageTemplate.find('.js-chat__message');
@@ -34,9 +34,6 @@ ChatView.prototype = {
 		this.$typingTemplateMessage = this.$typingTemplate.find('.js-chat__message');
 		this.$typingTemplateBubble = this.$typingTemplate.find('.js-chat__bubble');
 		this.$typingTemplateAvatar = this.$typingTemplate.find('.js-chat__avatar');
-
-		this.$typingSelfMessages = $('.js-chat__message').filter('[data-author="self"]');
-		this.$typingBotMessages = $('.js-chat__message').filter('[data-author="bot"]');
 
 		return this;
 	},
@@ -122,7 +119,7 @@ ChatView.prototype = {
 
 		for (var author in authors) {
 			if ($.inArray(authors[author], typing) === -1) {
-				$('.js-chat__message').filter('[data-author="' + authors[author] + '"]').remove();
+				this.$message.filter('[data-author="' + authors[author] + '"]').remove();
 			}
 		}
 
