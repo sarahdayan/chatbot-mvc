@@ -22,15 +22,12 @@
 		overflow: scroll;
 	}
 	&__inner {
-		padding: 15px;
+		padding: 15px 15px 0 15px;
 	}
 	&__message {
 		display: flex;
 		margin-bottom: 15px;
 		align-items: flex-end;
-		&:last-child {
-			margin-bottom: 0;
-		}
 		&--right {
 			flex-direction: row-reverse;
 			#{$block}__avatar {

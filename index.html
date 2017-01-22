@@ -16,59 +16,9 @@
 				</h1>
 			</header>
 			<div class="chat__body">
-				<div class="chat__inner js-chat__inner">
-					<div class="chat__message">
-						<div class="chat__avatar">
-							<img class="img img--responsive img--circle" src="img/avatar.jpg" alt="Avatar">
-						</div>
-						<div class="chat__bubble">
-							Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator.
-						</div>
-					</div>
-					<div class="chat__message chat__message--right">
-						<div class="chat__avatar">
-							<img class="img img--responsive img--circle" src="img/avatar2.jpg" alt="Avatar">
-						</div>
-						<div class="chat__bubble">
-							Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator.
-						</div>
-					</div>
-					<div class="chat__message">
-						<div class="chat__avatar">
-							<img class="img img--responsive img--circle" src="img/avatar.jpg" alt="Avatar">
-						</div>
-						<div class="chat__bubble">
-							Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator.
-						</div>
-					</div>
-					<div class="chat__message chat__message--right">
-						<div class="chat__avatar">
-							<img class="img img--responsive img--circle" src="img/avatar2.jpg" alt="Avatar">
-						</div>
-						<div class="chat__bubble">
-							Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator.
-						</div>
-					</div>
-					<div class="chat__message chat__message--typing">
-						<div class="chat__avatar">
-							<img class="img img--responsive img--circle" src="img/avatar.jpg" alt="Avatar">
-						</div>
-						<div class="chat__bubble">
-							<div class="chat__typing">
-								<i class="zmdi zmdi-more"></i>
-							</div>
-						</div>
-					</div>
-					<div class="chat__message chat__message--right chat__message--typing">
-						<div class="chat__avatar">
-							<img class="img img--responsive img--circle" src="img/avatar2.jpg" alt="Avatar">
-						</div>
-						<div class="chat__bubble">
-							<div class="chat__typing">
-								<i class="zmdi zmdi-more"></i>
-							</div>
-						</div>
-					</div>
+				<div class="chat__inner">
+					<div class="chat__messenger js-chat__messenger"></div>
+					<div class="chat__typer js-chat__typer"></div>
 				</div>
 			</div>
 			<footer class="chat__footer">
@@ -88,8 +38,15 @@
 				</div>
 			</div>
 			<div class="templates__template" id="chat__typing">
-				<div class="chat__typing">
-					<i class="zmdi zmdi-more"></i>
+				<div class="chat__message chat__message--typing js-chat__message">
+					<div class="chat__avatar js-chat__avatar">
+						<img class="img img--responsive img--circle" src="#" alt="">
+					</div>
+					<div class="chat__bubble">
+						<div class="chat__typing">
+							<i class="zmdi zmdi-more"></i>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
