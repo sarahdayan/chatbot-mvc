@@ -52,7 +52,7 @@ ChatController.prototype = {
 							});
 					}
 					else {
-						var randomInt = ChatHelper.getRandomInt(0, data.total);
+						var randomInt = ChatHelper.getRandomInt(0, data.total - 1);
 						message = data.result[randomInt].value;
 					}
 					setTimeout(function() {
