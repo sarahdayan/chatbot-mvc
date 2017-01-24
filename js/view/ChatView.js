@@ -23,7 +23,7 @@ ChatView.prototype = {
 		this.$messagesContainer = this.$container.find('.js-chat__messenger');
 		this.$typerContainer = this.$container.find('.js-chat__typer');
 
-		this.$message = $('.js-chat__message');
+		this.$message = '.js-chat__message';
 
 		this.$messageTemplate = $('#chat__message').clone();
 		this.$messageTemplateMessage = this.$messageTemplate.find('.js-chat__message');
@@ -112,16 +112,31 @@ ChatView.prototype = {
 				this.$typingTemplateMessage.removeClass(authorClass);
 			}
 			if (typing[user].isTyping) {
-				this.$typingTemplateMessage.attr('data-author', typing[user].name);
+				var typingDate = typing[user].typingDate;
+				var typingId = typingDate.getFullYear().toString() + (typingDate.getMonth() + 1).toString() + typingDate.getDate().toString() + typingDate.getHours().toString() + typingDate.getMinutes().toString() + typingDate.getSeconds().toString() + typingDate.getMilliseconds().toString();
+				this.$typingTemplateMessage.attr({
+					'data-author': typing[user].name,
+					'data-id': typingId
+				});
 				this.$typingTemplateAvatar.find('img').attr('src', 'img/' + this.getAvatar(typing[user].name));
 				html += this.$typingTemplate.html();
 			}
 			else {
-				this.$message.filter('[data-author="' + typing[user].name + '"]').remove();
+				$(this.$message).filter('[data-author="' + typing[user].name + '"]').remove();
 			}
 		}
 
 		this.$typerContainer.html(html);
+
+		this.sortListByAttr(this.$typerContainer, this.$message, 'data-id');
+	},
+
+	sortListByAttr: function(list, children, attr) {
+		var item = list.find(children).remove();
+		item.sort(function(a, b) {
+			return parseInt($(a).attr(attr)) > parseInt($(b).attr(attr));
+		});
+		list.append(item);
 	},
 
 	getAvatar: function (username) {
@@ -158,7 +173,6 @@ ChatView.prototype = {
 		this.$chatBody.animate({
 			scrollTop: this.$chatInner.height()
 		}, 0);
-		console.log('scrolled');
 	}
 
 };

@@ -4,11 +4,13 @@ var ChatModel = function () {
 	this.users = {
 		self: {
 			name: 'self',
-			isTyping: false
+			isTyping: false,
+			typingDate: null
 		},
 		bot: {
 			name: 'bot',
-			isTyping: false
+			isTyping: false,
+			typingDate: null
 		}
 	}
 	this.addMessageEvent = new Event(this);
@@ -37,7 +39,10 @@ ChatModel.prototype = {
 		return this.users;
 	},
 
-	setUserTyping: function (user, isTyping) {
+	setUserTyping: function (user, isTyping, date) {
+		if (isTyping !== this.users[user].isTyping) {
+			this.users[user].typingDate = new Date;
+		}
 		this.users[user].isTyping = isTyping;
 		this.changeTypingEvent.notify();
 	}
