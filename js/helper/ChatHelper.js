@@ -6,7 +6,7 @@ var ChatHelper = function () {
 
 	return {
 		getRandomInt: function(min, max) {
-			getRandomInt(min, max);
+			return getRandomInt(min, max);
 		}
 	}
 
