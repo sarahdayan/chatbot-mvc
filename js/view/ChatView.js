@@ -1,8 +1,7 @@
 var ChatView = function (model) {
 	this.model = model;
 	this.addMessageEvent = new Event(this);
-	this.addTypingEvent = new Event(this);
-	this.removeTypingEvent = new Event(this);
+	this.changeTypingEvent = new Event(this);
 
 	this.init();
 };
@@ -17,6 +16,8 @@ ChatView.prototype = {
 
 	createChildren: function () {
 		this.$container = $('.js-chat');
+		this.$chatBody = this.$container.find('.chat__body');
+		this.$chatInner = this.$container.find('.chat__inner');
 		this.$addMessageButton = this.$container.find('.js-chat__submit');
 		this.$messageInput = this.$container.find('.js-chat__input');
 		this.$messagesContainer = this.$container.find('.js-chat__messenger');
@@ -42,10 +43,9 @@ ChatView.prototype = {
 		this.addMessageButtonHandler = this.addMessageButton.bind(this);
 		this.handleKeyupsHandler = this.handleKeyups.bind(this);
 		this.clearMessageInputHandler = this.clearMessageInput.bind(this);
-		this.botAnswerHandler = this.botAnswer.bind(this);
 		this.addMessageHandler = this.show.bind(this);
-		this.showTypingHandler = this.show.bind(this);
-		this.hideTypingHandler = this.show.bind(this);
+		this.changeTypingHandler = this.changeTyping.bind(this);
+		this.scrollChatHandler = this.scrollChatBody.bind(this);
 
 		return this;
 	},
@@ -54,9 +54,9 @@ ChatView.prototype = {
 		this.$addMessageButton.click(this.addMessageButtonHandler);
 		this.$messageInput.keyup(this.handleKeyupsHandler);
 		this.model.addMessageEvent.attach(this.addMessageHandler);
-		this.model.addMessageEvent.attach(this.botAnswerHandler);
-		this.model.addTypingEvent.attach(this.showTypingHandler);
-		this.model.removeTypingEvent.attach(this.hideTypingHandler);
+		this.model.addMessageEvent.attach(this.scrollChatHandler);
+		this.model.changeTypingEvent.attach(this.changeTypingHandler);
+		this.model.changeTypingEvent.attach(this.scrollChatHandler);
 
 		return this;
 	},
@@ -69,85 +69,68 @@ ChatView.prototype = {
 	},
 
 	show: function () {
-		this.buildList();
+		this.buildMessageList();
+		this.buildTypingList();
 	},
 
-	buildList: function () {
+	buildMessageList: function () {
 		var messages = this.model.getMessages();
-		var typing = this.model.getTyping();
 		var html = '';
-		var html2 = '';
 		var authorClass = this.$messageSelfClass;
 		var authorAvatar = '';
-		var authors = ['bot', 'self'];
 
 		this.$messagesContainer.html('');
-		this.$typerContainer.append('');
 
 		for (var message in messages) {
 			if (messages[message].messageAuthor === 'self') {
 				this.$messageTemplateMessage.addClass(authorClass);
-				authorAvatar = 'avatar2.jpg';
 			}
 			else {
 				this.$messageTemplateMessage.removeClass(authorClass);
-				authorAvatar = 'avatar.jpg';
 			}
-			this.$messageTemplateAvatar.find('img').attr('src', 'img/' + authorAvatar);
+			this.$messageTemplateAvatar.find('img').attr('src', 'img/' + this.getAvatar(messages[message].messageAuthor));
 			this.$messageTemplateBubble.text(messages[message].messageName);
 			html += this.$messageTemplate.html();
 		}
 
 		this.$messagesContainer.append(html);
+	},
 
-		for (var author in typing) {
-			if (typing[author] === 'self') {
+	buildTypingList: function () {
+		var typing = this.model.getUsers();
+		var html = '';
+		var authorClass = this.$messageSelfClass;
+		var authorAvatar = '';
+
+		this.$typerContainer.html('');
+		
+		for (var user in typing) {
+			if (typing[user].name === 'self') {
 				this.$typingTemplateMessage.addClass(authorClass);
-				authorAvatar = 'avatar2.jpg';
 			}
 			else {
 				this.$typingTemplateMessage.removeClass(authorClass);
-				authorAvatar = 'avatar.jpg';
 			}
-
-			this.$typingTemplateMessage.attr('data-author', typing[author]);
-			this.$typingTemplateAvatar.find('img').attr('src', 'img/' + authorAvatar);
-			html2 += this.$typingTemplate.html();
-		}
-
-		this.$typerContainer.html(html2);
-
-		for (var author in authors) {
-			if ($.inArray(authors[author], typing) === -1) {
-				this.$message.filter('[data-author="' + authors[author] + '"]').remove();
+			if (typing[user].isTyping) {
+				this.$typingTemplateMessage.attr('data-author', typing[user].name);
+				this.$typingTemplateAvatar.find('img').attr('src', 'img/' + this.getAvatar(typing[user].name));
+				html += this.$typingTemplate.html();
+			}
+			else {
+				this.$message.filter('[data-author="' + typing[user].name + '"]').remove();
 			}
 		}
 
+		this.$typerContainer.html(html);
+	},
+
+	getAvatar: function (username) {
+		return username === 'self' ? 'avatar2.jpg' : 'avatar.jpg';
 	},
 
 	clearMessageInput: function () {
 		this.$messageInput.val('');
 	},
-
-	/* [start] This shouldn't go in the view... */
-
-	botAnswer: function () {
-		var that = this;
-		var messages = this.model.getMessages();
-		var latestChatter = messages[messages.length - 1].messageAuthor;
-		if (latestChatter === 'self') {
-			this.addTyping('bot');
-			setTimeout(function() {
-				that.addMessageEvent.notify({
-					message: 'Yes!',
-					author: 'bot'
-				});
-				that.removeTyping('bot');
-			}, 10000);
-		}
-	},
-
-	/* [end] This shouldn't go in the view... */
 
 	handleKeyups: function (event) {
 		if (event.keyCode === 13) {
@@ -155,21 +138,27 @@ ChatView.prototype = {
 			this.clearMessageInput();
 		}
 		if (this.$messageInput.val() === '') {
-			return this.removeTyping('self');
+			this.changeTypingEvent.notify({
+				author: 'self',
+				isTyping: false
+			});
+			return;
 		}
-		this.addTyping('self');
-	},
-
-	addTyping: function (author) {
-		this.addTypingEvent.notify({
-			author: author
+		this.changeTypingEvent.notify({
+			author: 'self',
+			isTyping: true
 		});
 	},
 
-	removeTyping: function (author) {
-		this.removeTypingEvent.notify({
-			author: author
-		});
+	changeTyping:  function () {
+		this.show();
+	},
+
+	scrollChatBody: function () {
+		this.$chatBody.animate({
+			scrollTop: this.$chatInner.height()
+		}, 0);
+		console.log('scrolled');
 	}
 
 };

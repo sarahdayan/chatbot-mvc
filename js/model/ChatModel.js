@@ -1,9 +1,18 @@
 var ChatModel = function () {
 	this.messages = [];
 	this.typing = [];
+	this.users = {
+		self: {
+			name: 'self',
+			isTyping: false
+		},
+		bot: {
+			name: 'bot',
+			isTyping: false
+		}
+	}
 	this.addMessageEvent = new Event(this);
-	this.addTypingEvent = new Event(this);
-	this.removeTypingEvent = new Event(this);
+	this.changeTypingEvent = new Event(this);
 };
 
 ChatModel.prototype = {
@@ -16,27 +25,21 @@ ChatModel.prototype = {
 		this.addMessageEvent.notify();
 	},
 
-	addTyping: function (author) {
-		if ($.inArray(author, this.typing) === -1) {
-			this.typing.push(author);
-			this.addTypingEvent.notify();
-		}
-	},
-
-	removeTyping: function (author) {
-		var index = this.typing.indexOf(author);
-		if (index > -1) {
-			this.typing.splice(index, 1);
-		}
-		this.removeTypingEvent.notify();
-	},
-
 	getTyping: function () {
 		return this.typing;
 	},
 
 	getMessages: function () {
 		return this.messages;
+	},
+
+	getUsers: function () {
+		return this.users;
+	},
+
+	setUserTyping: function (user, isTyping) {
+		this.users[user].isTyping = isTyping;
+		this.changeTypingEvent.notify();
 	}
 
 };
