@@ -38,28 +38,16 @@ ChatController.prototype = {
 	makeBotAnswer: function () {
 		var that = this;
 		var user = 'bot';
-		var messages = this.model.getMessages();
-		var latestChatter = messages[messages.length - 1].messageAuthor;
-		if (latestChatter === 'self') {
-			that.model.setUserTyping(user, true);
-			var message = '';
-			$.getJSON('https://api.chucknorris.io/jokes/search?query=' + messages[messages.length - 1].messageName)
-				.done(function(data) {
-					if (data.total <= 0) {
-						$.getJSON('https://api.chucknorris.io/jokes/random')
-							.done(function(data) {
-								message = data.value;
-							});
-					}
-					else {
-						var randomInt = ChatHelper.getRandomInt(0, data.total - 1);
-						message = data.result[randomInt].value;
-					}
-					setTimeout(function() {
-						that.model.addMessage(message, user);
-						that.model.setUserTyping(user, false);
-					}, 5000);
-				});
+		var latestEntry = this.model.getLatestEntry();
+		if (latestEntry.messageAuthor === 'self') {
+			var message = that.model.getBotSentence();
+			setTimeout(function() {
+				that.model.setUserTyping(user, true);
+				var botTyping = setTimeout(function() {
+					that.model.addMessage(message, user);
+					that.model.setUserTyping(user, false);
+				}, message.split(' ').length * that.model.getBotTypingRate());
+			}, latestEntry.messageName.split(' ').length * that.model.getBotReadingRate());
 		}
 	}
 
