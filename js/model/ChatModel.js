@@ -15,17 +15,6 @@ var ChatModel = function () {
 			readingRate: 300
 		}
 	}
-	this.emojis = {
-		':)': 'emoji_u1f60a.svg',
-		';)': 'emoji_u1f60b.svg',
-		':(': 'emoji_u1f61e.svg',
-		':o': 'emoji_u1f62e.svg',
-		'B)': 'emoji_u1f60e.svg',
-		':smug:': 'emoji_u1f60f.svg',
-		':*': 'emoji_u1f61a.svg',
-		':P': 'emoji_u1f61b.svg',
-		':\'(': 'emoji_u1f62d.svg'
-	};
 
 	this.addMessageEvent = new Event(this);
 	this.changeTypingEvent = new Event(this);
@@ -74,10 +63,6 @@ ChatModel.prototype = {
 	getLatestEntry: function () {
 		var messages = this.getMessages();
 		return messages[messages.length - 1];
-	},
-
-	getEmojis: function () {
-		return this.emojis;
 	}
 
 };

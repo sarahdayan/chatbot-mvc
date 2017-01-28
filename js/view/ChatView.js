@@ -1,5 +1,8 @@
 var ChatView = function (model) {
 	this.model = model;
+
+	this.emojis = new EmojiService();
+
 	this.addMessageEvent = new Event(this);
 	this.changeTypingEvent = new Event(this);
 
@@ -147,7 +150,7 @@ ChatView.prototype = {
 	},
 
 	parseEmojis: function (message) {
-		var emojis = this.model.getEmojis();
+		var emojis = this.emojis.getEmojis();
 		var regex = '';
 		var parsedMessage = message;
 		for (var emoji in emojis) {
