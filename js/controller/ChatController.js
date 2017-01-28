@@ -2,6 +2,8 @@ var ChatController = function (model, view) {
 	this.model = model;
 	this.view = view;
 
+	this.botTyping;
+
 	this.botDoneReadingEvent = new Event(this);
 	this.botDoneTypingEvent = new Event(this);
 
@@ -42,11 +44,12 @@ ChatController.prototype = {
 	},
 
 	makeBotType: function() {
+		clearTimeout(this.botTyping);
 		var that = this;
 		var user = 'bot';
 		var message = that.model.getBotSentence();
 		that.model.setUserTyping(user, true);
-		setTimeout(function() {
+		this.botTyping = setTimeout(function() {
 			that.botDoneTypingEvent.notify({
 				message: message,
 				author: user
