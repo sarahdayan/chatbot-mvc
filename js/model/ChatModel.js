@@ -34,11 +34,13 @@ var ChatModel = function () {
 ChatModel.prototype = {
 
 	addMessage: function (message, author) {
-		this.messages.push({
-			messageName: message,
-			messageAuthor: author
-		});
-		this.addMessageEvent.notify();
+		if (message.trim() !== '' && author.trim() !== '') {
+			this.messages.push({
+				messageName: message,
+				messageAuthor: author
+			});
+			this.addMessageEvent.notify();
+		}
 	},
 
 	getTyping: function () {
