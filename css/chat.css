@@ -121,6 +121,10 @@ html, body {
       border-radius: 0 0 50% 50%; }
   .chat__typing {
     opacity: .6; }
+  .chat__emoji {
+    position: relative;
+    top: -2px;
+    height: 22px; }
   .chat__footer {
     display: -webkit-box;
     display: -webkit-flex;

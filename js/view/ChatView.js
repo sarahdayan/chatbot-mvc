@@ -36,6 +36,9 @@ ChatView.prototype = {
 		this.$typingTemplateBubble = this.$typingTemplate.find('.js-chat__bubble');
 		this.$typingTemplateAvatar = this.$typingTemplate.find('.js-chat__avatar');
 
+		this.$emojiTemplate = $('#chat__emoji').clone();
+		this.$emojiTemplateEmoji = this.$emojiTemplate.find('.js-chat__emoji');
+
 		return this;
 	},
 
@@ -89,7 +92,7 @@ ChatView.prototype = {
 				this.$messageTemplateMessage.removeClass(authorClass);
 			}
 			this.$messageTemplateAvatar.find('img').attr('src', 'img/' + this.getAvatar(messages[message].messageAuthor));
-			this.$messageTemplateBubble.text(messages[message].messageName);
+			this.$messageTemplateBubble.html(this.parseEmojis(messages[message].messageName));
 			html += this.$messageTemplate.html();
 		}
 
@@ -141,6 +144,21 @@ ChatView.prototype = {
 
 	getAvatar: function (username) {
 		return username === 'self' ? 'avatar2.jpg' : 'avatar.jpg';
+	},
+
+	parseEmojis: function (message) {
+		var emojis = this.model.getEmojis();
+		var regex = '';
+		var parsedMessage = message;
+		for (var emoji in emojis) {
+			regex = new RegExp(ChatHelper.escapeRegExp(emoji), 'g');
+			this.$emojiTemplateEmoji.attr({
+				'src': 'img/emojis/' + emojis[emoji],
+				'title': emoji
+			});
+			parsedMessage = parsedMessage.replace(regex, '&nbsp;' + this.$emojiTemplateEmoji[0].outerHTML);
+		}
+		return ChatHelper.trimNonBreakableSpaces(parsedMessage);
 	},
 
 	clearMessageInput: function () {
