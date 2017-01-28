@@ -12,6 +12,12 @@ var ChatHelper = function () {
 		return string.replace(/(?:^(?:&nbsp;)+)|(?:(?:&nbsp;)+$)/g, '');
 	};
 
+	var capitalizeSentence = function(string) {
+		return string.replace(/.+?[\.\?\!](\s|$)/g, function (text) {
+			return string.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
+		});
+	};
+
 	return {
 		getRandomInt: function(min, max) {
 			return getRandomInt(min, max);
@@ -21,6 +27,9 @@ var ChatHelper = function () {
 		},
 		trimNonBreakableSpaces: function(string) {
 			return trimNonBreakableSpaces(string);
+		},
+		capitalizeSentence: function(string) {
+			return capitalizeSentence(string);
 		}
 	}
 
