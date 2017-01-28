@@ -62,10 +62,10 @@ ChatController.prototype = {
 	makeBotRead: function() {
 		var that = this;
 		var latestEntry = this.model.getLatestEntry();
-		if (latestEntry.messageAuthor === 'self') {
+		if (latestEntry.author === 'self') {
 			setTimeout(function() {
 				that.botDoneReadingEvent.notify();
-			}, latestEntry.messageName.split(' ').length * that.model.getBotReadingRate());
+			}, latestEntry.message.split(' ').length * that.model.getBotReadingRate());
 		}
 	}
 

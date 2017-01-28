@@ -15,7 +15,6 @@ var ChatModel = function () {
 			readingRate: 300
 		}
 	}
-
 	this.addMessageEvent = new Event(this);
 	this.changeTypingEvent = new Event(this);
 };
@@ -25,8 +24,8 @@ ChatModel.prototype = {
 	addMessage: function (message, author) {
 		if (message.trim() !== '' && author.trim() !== '') {
 			this.messages.push({
-				messageName: message,
-				messageAuthor: author
+				message: message,
+				author: author
 			});
 			this.addMessageEvent.notify();
 		}

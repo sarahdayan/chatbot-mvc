@@ -88,14 +88,14 @@ ChatView.prototype = {
 		this.$messagesContainer.html('');
 
 		for (var message in messages) {
-			if (messages[message].messageAuthor === 'self') {
+			if (messages[message].author === 'self') {
 				this.$messageTemplateMessage.addClass(authorClass);
 			}
 			else {
 				this.$messageTemplateMessage.removeClass(authorClass);
 			}
-			this.$messageTemplateAvatar.find('img').attr('src', 'img/' + this.getAvatar(messages[message].messageAuthor));
-			this.$messageTemplateBubble.html(this.parseEmojis(messages[message].messageName));
+			this.$messageTemplateAvatar.find('img').attr('src', 'img/' + this.getAvatar(messages[message].author));
+			this.$messageTemplateBubble.html(this.parseEmojis(messages[message].message));
 			html += this.$messageTemplate.html();
 		}
 
