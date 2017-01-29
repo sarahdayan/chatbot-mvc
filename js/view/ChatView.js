@@ -72,6 +72,7 @@ ChatView.prototype = {
 			message: this.$messageInput.val(),
 			author: 'self'
 		});
+		this.clearMessageInput();
 	},
 
 	show: function () {
@@ -166,24 +167,23 @@ ChatView.prototype = {
 
 	clearMessageInput: function () {
 		this.$messageInput.val('');
+		this.changeTypingEvent.notify({
+			author: 'self',
+			isTyping: false
+		});
 	},
 
 	handleKeyups: function (event) {
 		if (event.keyCode === 13) {
 			this.addMessageButton();
-			this.clearMessageInput();
-		}
-		if (this.$messageInput.val() === '') {
-			this.changeTypingEvent.notify({
-				author: 'self',
-				isTyping: false
-			});
 			return;
 		}
-		this.changeTypingEvent.notify({
-			author: 'self',
-			isTyping: true
-		});
+		if (this.$messageInput.val() !== '') {
+			this.changeTypingEvent.notify({
+				author: 'self',
+				isTyping: true
+			});
+		}
 	},
 
 	changeTyping:  function () {
